@@ -14,6 +14,12 @@ Snap is a lightweight, sandboxed menu bar app for macOS that captures a region o
 
 ## Install
 
+### Mac App Store
+
+*Coming soon* - submission in progress.
+
+### Build from source
+
 Requirements: macOS 26, Xcode (the full app, not just the Command Line Tools), and [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`).
 
 ```
