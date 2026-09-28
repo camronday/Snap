@@ -6,3 +6,4 @@ build-main/
 build-release/
 Local.xcconfig
 *.xcuserstate
+build-icon-check/

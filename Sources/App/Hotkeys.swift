@@ -1,8 +1,8 @@
 import KeyboardShortcuts
 
 extension KeyboardShortcuts.Name {
-    static let captureRegion = Self("captureRegion", default: .init(.s, modifiers: [.control, .shift]))
-    static let recordGIF = Self("recordGIF", default: .init(.g, modifiers: [.control, .shift]))
+    static let captureRegion = Self("captureRegion", initial: .init(.s, modifiers: [.control, .shift]))
+    static let recordGIF = Self("recordGIF", initial: .init(.g, modifiers: [.control, .shift]))
 }
 
 /// Wires global hotkeys to the coordinator. Call once at launch.

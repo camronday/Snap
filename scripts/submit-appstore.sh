@@ -7,7 +7,6 @@
 #   3. Apple Distribution certificate in your keychain
 #      (Xcode > Settings > Accounts > Manage Certificates > + > Apple Distribution)
 #   4. App record created in App Store Connect (bundle ID: com.cameronro.Snap)
-#   5. Config/Local.xcconfig present with your DEVELOPMENT_TEAM
 #
 # Upload credentials (one of):
 #   a) Transporter app (from Mac App Store) - drag the .pkg from build/AppStoreExport/
@@ -39,22 +38,14 @@ if ! command -v xcodegen &>/dev/null; then
     echo "error: xcodegen not found - install with: brew install xcodegen" >&2; exit 1
 fi
 
-if [[ ! -f "Config/Local.xcconfig" ]]; then
-    echo "error: Config/Local.xcconfig missing." >&2
-    echo "       Copy Config/Local.xcconfig.example, fill in your DEVELOPMENT_TEAM." >&2
-    exit 1
-fi
-
-TEAM=$(grep "DEVELOPMENT_TEAM" Config/Local.xcconfig | awk -F= '{gsub(/ /,"",$2); print $2}' | head -1)
-if [[ -z "$TEAM" ]]; then
-    echo "error: DEVELOPMENT_TEAM not set in Config/Local.xcconfig." >&2; exit 1
-fi
-
-if ! security find-identity -v -p codesigning | grep -q "Apple Distribution"; then
+DIST_CERT=$(security find-identity -v -p codesigning | grep "Apple Distribution" | head -1)
+if [[ -z "$DIST_CERT" ]]; then
     echo "error: No 'Apple Distribution' certificate found in keychain." >&2
     echo "       Xcode > Settings > Accounts > Manage Certificates > + > Apple Distribution" >&2
     exit 1
 fi
+TEAM=$(echo "$DIST_CERT" | grep -oE '\([A-Z0-9]{10}\)' | tr -d '()')
+echo "==> Using Distribution team: $TEAM"
 
 # ── Generate project ─────────────────────────────────────────────────────────
 
