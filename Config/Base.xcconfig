@@ -1,0 +1,14 @@
+// Committed. Applies to every configuration so the project builds and
+// signs to run locally with no setup: CODE_SIGN_IDENTITY = "-" (ad hoc) and
+// no DEVELOPMENT_TEAM.
+//
+// The owner's own machine (or anyone else who wants a stable code
+// signature across rebuilds, e.g. so Screen Recording permission isn't
+// re-requested every time) can override both by copying
+// Local.xcconfig.example to Local.xcconfig (git-ignored) in this same
+// directory and filling in their team ID and identity. Local.xcconfig's
+// assignments below win because they're parsed after these defaults.
+CODE_SIGN_IDENTITY = -
+DEVELOPMENT_TEAM =
+
+#include? "Local.xcconfig"

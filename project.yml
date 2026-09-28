@@ -1,0 +1,85 @@
+name: Snap
+options:
+  bundleIdPrefix: com.cameronro
+  deploymentTarget:
+    macOS: "26.0"
+
+configFiles:
+  Debug: Config/Base.xcconfig
+  Release: Config/Base.xcconfig
+
+packages:
+  KeyboardShortcuts:
+    url: https://github.com/sindresorhus/KeyboardShortcuts
+    revision: 772133d9dbe800fdac0473226822994c5c162c58
+
+settings:
+  base:
+    SWIFT_VERSION: "6"
+    SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor
+    SWIFT_APPROACHABLE_CONCURRENCY: YES
+    CODE_SIGN_STYLE: Manual
+    PROVISIONING_PROFILE_SPECIFIER: ""
+    MACOSX_DEPLOYMENT_TARGET: "26.0"
+  configs:
+    Release:
+      SWIFT_OPTIMIZATION_LEVEL: "-O"
+      SWIFT_COMPILATION_MODE: wholemodule
+      DEAD_CODE_STRIPPING: YES
+      STRIP_INSTALLED_PRODUCT: YES
+      DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+      ENABLE_DEBUG_DYLIB: NO
+      # Otherwise codesign injects `get-task-allow` (debugger attach) into
+      # even an ad hoc Release signature, which shouldn't ship.
+      CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
+
+targets:
+  Snap:
+    type: application
+    platform: macOS
+    deploymentTarget: "26.0"
+    sources:
+      - path: Sources/App
+      - path: Sources/Capture
+      - path: Sources/Overlay
+      - path: Sources/Annotation
+      - path: Sources/Output
+      - path: Sources/OCR
+      - path: Sources/Editor
+      - path: Sources/GIF
+      - path: Sources/UI
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.cameronro.Snap
+        INFOPLIST_FILE: Snap/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Snap/Snap.entitlements
+        GENERATE_INFOPLIST_FILE: NO
+        ENABLE_HARDENED_RUNTIME: YES
+        ENABLE_LIBRARY_VALIDATION: YES
+    dependencies:
+      - package: KeyboardShortcuts
+
+  SnapTests:
+    type: bundle.unit-test
+    platform: macOS
+    deploymentTarget: "26.0"
+    sources:
+      - path: Tests/SnapTests
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.cameronro.SnapTests
+        GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - target: Snap
+
+schemes:
+  Snap:
+    build:
+      targets:
+        Snap: all
+        SnapTests: [test]
+    test:
+      targets:
+        - SnapTests
+    run:
+      config: Debug

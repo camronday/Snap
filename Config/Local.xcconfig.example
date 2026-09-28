@@ -1,0 +1,8 @@
+// Copy this file to Local.xcconfig (git-ignored) in this same directory to
+// sign builds with your own team and identity instead of the ad hoc
+// default. This keeps your code signature stable across rebuilds, so
+// macOS doesn't treat each build as a new app and re-ask for Screen
+// Recording access.
+//
+// DEVELOPMENT_TEAM = YOUR_TEAM_ID
+// CODE_SIGN_IDENTITY = Apple Development
