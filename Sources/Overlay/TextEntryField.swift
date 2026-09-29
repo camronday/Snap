@@ -21,5 +21,7 @@ struct TextEntryField: View {
             .onSubmit { onCommit(text) }
             .position(x: origin.x + 60, y: origin.y)
             .onAppear { focused = true }
+            .textContentType(.none)
+            .autocorrectionDisabled()
     }
 }
